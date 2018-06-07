@@ -293,6 +293,7 @@
 							<el-upload
 							  class="upload-demo"
 							  ref="upload"
+							  :show-file-list="false"
 							  :headers="uploadHeaders"
 							  :action="uploadAction"
 							  list-type="picture-card"
@@ -797,6 +798,9 @@
 				this.$store.commit(CLR_RECORDINFO, data)
 				this.editForm.recordId= this.$store.getters.GetterEntity.recordId
 			    this.editForm.uuid= this.$store.getters.GetterEntity.uuid
+			    this.editForm.recordKyNo= this.$store.getters.GetterEntity.recordKyNo
+			    this.editForm.recordJjNo= this.$store.getters.GetterEntity.recordJjNo
+			    this.editForm.recordAjNo= this.$store.getters.GetterEntity.recordAjNo
 			    this.editForm.recordNo= this.$store.getters.GetterEntity.recordNo
 		        this.editForm.kyrName= this.$store.getters.GetterEntity.kyrName
 		        this.editForm.kyUnitName= this.$store.getters.GetterEntity.kyUnitName
@@ -821,6 +825,7 @@
 		        this.editForm.xcwd= this.$store.getters.GetterEntity.xcwd
 		        this.editForm.kyDate= this.$store.getters.GetterEntity.kyDate
 		        this.editForm.jjTime= this.$store.getters.GetterEntity.jjTime
+		        this.editForm.afTime= this.$store.getters.GetterEntity.afTime
 		        this.editForm.kyksTime= this.$store.getters.GetterEntity.kyksTime
 		        this.editForm.kyjsTime= this.$store.getters.GetterEntity.kyjsTime
 		        this.editForm.xcfx= this.$store.getters.GetterEntity.xcfx
@@ -921,6 +926,9 @@
 					recordId: 0,
 			        uuid: uuid.v4(),
 			        recordNo: '',
+			        recordKyNo: '',
+			        recordJjNo: '',
+			        recordAjNo: '',
 			        kyrName: this.$store.getters.GetterMe.userName,
 			        kyUnitName: this.$store.getters.GetterMe.deptName,
 			        jjrName: this.$store.getters.GetterMe.userName,
@@ -938,6 +946,7 @@
 			      	xcsd: '50%',
 			      	xcwd: '',
 			      	kyDate: Date.now(),
+			      	afTime: Date.now(),
 			      	jjTime: Date.now(),
 			      	kyksTime: Date.now(),
 			      	kyjsTime: Date.now(),
@@ -1032,6 +1041,9 @@
 								recordId: this.editForm.recordId,
 						        uuid: this.editForm.uuid,
 						        recordNo: this.editForm.recordNo,
+						        recordKyNo: this.editForm.recordKyNo,
+						        recordJjNo: this.editForm.recordJjNo,
+						        recordAjNo: this.editForm.recordAjNo,
 						        kyrName: this.editForm.kyrName,
 						        kyUnitName: this.editForm.kyUnitName,
 						        jjrName: this.editForm.jjrName,
@@ -1050,6 +1062,7 @@
 						      	xcwd: this.editForm.xcwd,
 						      	kyDate: this.editForm.kyDate,
 						      	jjTime: this.editForm.jjTime,
+						      	afTime: this.editForm.afTime,
 						      	kyksTime: this.editForm.kyksTime,
 						      	kyjsTime: this.editForm.kyjsTime,
 						      	xcfx: this.editForm.xcfx,
