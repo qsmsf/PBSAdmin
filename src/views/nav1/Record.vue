@@ -87,7 +87,7 @@
 			<el-table-column label="操作" width="200" fixed="right">
 				<template slot-scope="scope">
 					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">详情</el-button>
-					<el-button :disabled="checkShDisabled(scope.row)" size="small" @click="handleCheck(scope.$index, scope.row)">审核</el-button>
+					<!-- <el-button :disabled="checkShDisabled(scope.row)" size="small" @click="handleCheck(scope.$index, scope.row)">审核</el-button> -->
 					<el-button :disabled="!hasPriv('deleteRecord')" type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
@@ -100,7 +100,7 @@
 		</el-col>
 
 		<!--编辑界面-->
-		<el-dialog title="详情" v-model="editFormVisible" :close-on-click-modal="false" v-loading="editInfoLoading">
+		<el-dialog width="80%" title="详情" :visible="editFormVisible" :close-on-click-modal="false" v-loading="editInfoLoading" @close="editFormVisible = false" >
 			<el-tabs v-model="detailActiveTab" type="card" @tab-click="handleClick">
 			    <el-tab-pane label="基本信息" name="baseInfo">
 			    	<el-form :model="editForm" label-width="100px" :rules="editFormRules" ref="editForm">
@@ -380,10 +380,10 @@
 				<el-button type="primary" @click.native="recordSubmit" :disabled ="submitDisabled" :loading="editLoading">保存并提交</el-button>
 			</div>
 		</el-dialog>
-		<el-dialog :visible.sync="dialogVisible" size="tiny">
+		<el-dialog :visible.sync="dialogVisible" >
 		  <img width="100%" :src="dialogImageUrl" alt="">
 		</el-dialog>
-		<el-dialog title="审核" v-model="checkFormVisible" :close-on-click-modal="false" v-loading="checkInfoLoading">
+		<el-dialog title="审核" :visible="checkFormVisible" :close-on-click-modal="false" v-loading="checkInfoLoading">
 		  	<el-form :model="checkForm" label-width="80px">
 		  		<el-form-item label="审核结果">
 		  			<el-radio-group v-model="checkForm.shjg">
@@ -558,6 +558,10 @@
 				}
 
 			}
+		},
+		mounted() {
+			//this.getUsers();
+			//console.log(!this.hasPriv('addRecord'))
 		},
 		methods: {
 			hasPriv(tag) {
@@ -1136,10 +1140,7 @@
 					}
 				})
 			}					
-		},
-		mounted() {
-			//this.getUsers();
-		}
+		}		
 	}
 
 </script>
