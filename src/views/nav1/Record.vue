@@ -1027,7 +1027,7 @@
 				})
 			},
 			recordSubmit: function () {
-				this.editForm.recState = 1002
+				this.editForm.recState = 1004
 				this.doSubmit()
 			},
 			recordSave: function () {

@@ -121,8 +121,17 @@ const state = {
     label: '现场制图',
     value: 2004
   }, {
-    label: '见证人签名',
+    label: '其他',
     value: 2005
+  }, {
+    label: '见证人签名',
+    value: 2006
+  }, {
+    label: '现场方位图',
+    value: 2007
+  }, {
+    label: '现场平面图',
+    value: 2008
   }]
 }
 
