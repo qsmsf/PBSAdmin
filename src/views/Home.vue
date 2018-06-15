@@ -129,7 +129,11 @@
 		mounted() {
 			let bUrl = 'http://182.61.43.29:8080/pbsserver/'
 		    bUrl = 'http://127.0.0.1:8081/';
-		    this.$store.commit(SET_SYSINFO, bUrl);
+		    let sysInfo = {
+		    	baseUrl: bUrl,
+		    	accessToken: this.$route.query.accessToken
+		    }
+		    this.$store.commit(SET_SYSINFO, sysInfo);
 			/*
 			var user = sessionStorage.getItem('user');
 			if (user) {
@@ -139,7 +143,7 @@
 			}
 			*/
 			this.$http({
-		        url: bUrl+'common/getInitInfoTest?accessToken='+this.$route.query.accessToken,
+		        url: bUrl+'common/getInitInfo?accessToken='+this.$route.query.accessToken,
 		        method: 'Get',
 		        emulateJSON: true,
 		        headers: {

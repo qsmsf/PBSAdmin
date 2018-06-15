@@ -639,8 +639,8 @@
 			},
 			autoKysy: function() {
 				let data = this.$moment(this.editForm.jjTime).format("YYYY年MM月DD日hh点mm分") + ',' + this.editForm.jjUnitName + '接到报警：' + this.editForm.fsqy;
-      			data += this.editForm.xcwz + '发生一宗' + this.editForm.recTitle + '。' + '需技术员对现场进行勘查。';
-      			this.editForm2.kysy = data;
+      			data += this.editForm.xcwz + '发生一宗' + this.editForm.recTitle + '。' + '需技术员对现场进行勘查。'
+      			this.editForm2.kysy = data
 			},
 			autoXcms: function() {
 			    let disp = '  现场位于' + this.editForm.fsqy + this.editForm.xcwz + ',现场';
@@ -675,58 +675,59 @@
 				          fileId: data
 				        }
 				      }).then(function (res) {
-				      	this.editInfoLoading = false;
+				      	this.editInfoLoading = false
 				      	if(res.data.code == 604){
-				      		this.curFiles.splice(index,1);
+				      		this.curFiles.splice(index,1)
 				      	}else{
 				      		this.$message({
 								message: res.data.data,
 								type: 'error'
-							});
+							})
 				      	}
-				      });
+				      })
 				}).catch(() => {
 
-				});
+				})
 				
 			},
 			submitUpload() {
-		        this.$refs.upload.submit();
+		        this.$refs.upload.submit()
 		    },
 		    handleRemove(file, fileList) {
 		        //console.log(file, fileList);
 		    },
 		    handlePreview(file) {
-		        this.dialogImageUrl = file.url;
-		        this.dialogVisible = true;
+		        this.dialogImageUrl = file.url
+		        this.dialogVisible = true
 		    },
 		    handleSuccess(response, file, fileList) {
-		    	console.log(response);
-		    	this.curFiles.push(response.data);
+		    	console.log(response)
+		    	this.curFiles.push(response.data)
 
-		    	//this.uploadAction += this.$store.getters.GetterEntity.uuid;
-		    	//let data = String(this.$store.getters.GetterEntity.uuid);
+		    	//this.uploadAction += this.$store.getters.GetterEntity.uuid
+		    	//let data = String(this.$store.getters.GetterEntity.uuid)
 		    	//this.uploadHeaders = {
 		    	//	uuid: data
-		    	//};
+		    	//}
 		    },
 			//获取用户列表
 			getRecords() {
 				this.listLoading = true;
 				this.filters.offset = this.page-1;
 				if(this.kyDateQj === ''){
-					let date = Date.now();
+					let date = Date.now()
 					this.filters.kyDateEnd = this.$moment(date).format("YYYY-MM-DD");
-					this.filters.kyDateBegin = this.$moment(date).subtract(7, 'days').format("YYYY-MM-DD");
+					this.filters.kyDateBegin = this.$moment(date).subtract(7, 'days').format("YYYY-MM-DD")
 				}else {
-					this.filters.kyDateEnd = this.$moment(this.kyDateQj["1"]).format("YYYY-MM-DD");
-					this.filters.kyDateBegin = this.$moment(this.kyDateQj["0"]).format("YYYY-MM-DD");
+					this.filters.kyDateEnd = this.$moment(this.kyDateQj["1"]).format("YYYY-MM-DD")
+					this.filters.kyDateBegin = this.$moment(this.kyDateQj["0"]).format("YYYY-MM-DD")
 				}
 				//console.log(this.$moment(this.filters.kyDateBegin["0"]).format("YYYY-MM-DD"));				
-				let data = JSON.stringify(this.filters);
+				let data = JSON.stringify(this.filters)
 				//console.log(data);
 				this.$http({
 			        url: this.$store.getters.GetterBaseUrl + 'records/getRecentRecordList',
+			        params: {accessToken: this.$store.getters.GetterAccessToken},
 			        method: 'Post',
 			        emulateJSON: true,
 			        headers: {
@@ -749,10 +750,11 @@
 			      });			
 			},
 			getCurFiles: function(uuid) {
-				this.editInfoLoading = true;
-				let data = String(uuid);
+				this.editInfoLoading = true
+				let data = String(uuid)
 				this.$http({
 			        url: this.$store.getters.GetterBaseUrl + 'uploadFiles/getRecordFileList',
+			        params: {accessToken: this.$store.getters.GetterAccessToken},
 			        method: 'Get',
 			        emulateJSON: true,
 			        headers: {
@@ -760,24 +762,25 @@
 			          uuid: data
 			        }
 			      }).then(function (res) {
-			      	this.editInfoLoading = false;
+			      	this.editInfoLoading = false
 			      	if(res.data.code == 604){
-			      		this.curFiles = res.data.data;
-			      		this.editInfoLoading = false;
+			      		this.curFiles = res.data.data
+			      		this.editInfoLoading = false
 			      	}else{
-			      		this.editInfoLoading = false;
+			      		this.editInfoLoading = false
 			      		this.$message({
 							message: res.data.data,
 							type: 'error'
-						});
+						})
 			      	}
-			      });
+			      })
 			},
 			getRecordInfo: function(id) {
 				this.editInfoLoading = true
 				let data = JSON.stringify(id)
 				this.$http({
 			        url: this.$store.getters.GetterBaseUrl + 'records/getRecordDetail',
+			        params: {accessToken: this.$store.getters.GetterAccessToken},
 			        method: 'Get',
 			        emulateJSON: true,
 			        headers: {
@@ -789,7 +792,7 @@
 			      	if(res.data.code == 604){
 			      		this.setRecordData(res.data.data)
 			      		this.getCurFiles(this.$store.getters.GetterEntity.uuid)
-			      		this.editFormVisible = true;
+			      		this.editFormVisible = true
 			      	}else{
 			      		this.$message({
 							message: res.data.data,
@@ -883,6 +886,7 @@
 					let data = JSON.stringify(row.recordId)
 					this.$http({
 				        url: this.$store.getters.GetterBaseUrl + 'records/deleteRecord',
+				        params: {accessToken: this.$store.getters.GetterAccessToken},
 				        method: 'Post',
 				        emulateJSON: true,
 				        headers: {
@@ -999,6 +1003,7 @@
 					let data = JSON.stringify(this.$store.getters.GetterEntity)
 					this.$http({
 				        url: this.$store.getters.GetterBaseUrl + 'records/checkRecord',
+				        params: {accessToken: this.$store.getters.GetterAccessToken},
 				        method: 'Post',
 				        emulateJSON: true,
 				        headers: {
@@ -1110,6 +1115,7 @@
 							}
 							this.$http({
 						        url: this.$store.getters.GetterBaseUrl + extUrl,
+						        params: {accessToken: this.$store.getters.GetterAccessToken},
 						        method: 'Post',
 						        emulateJSON: true,
 						        headers: {
