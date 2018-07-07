@@ -271,24 +271,29 @@
 			    	</el-form>
 			    </el-tab-pane>
 			    <el-tab-pane label="相关图像" name="picInfo">
-			    	<el-form :model="editForm3" label-width="20px" >		    		
-						<el-form-item v-for="(item, index) in curFiles" :key="item.fileId">
-							<el-card class="box-card">
-							  <div slot="header" class="clearfix">
-							  	<el-select v-model="item.fileType" style="width: 80%;" >
-								    <el-option v-for="item2 in fileTypeOptions" :key="item2.value" :label="item2.label" :value="item2.value">
-								    </el-option>
-							  	</el-select>
-							    <el-button style="float: right; padding: 3px 0" type="text" @click.native="deletePicForEdit(item, index)">删除</el-button>
-							  </div>							  
-							  <div  class="text item">
-							  	<img :src="item.fileUrl" class="image">
-							  </div>
-							  <div>
-							  	<el-input v-model="item.fileHint" placeholder="输入图片说明" />			        
-							  </div>
-							</el-card>
-						</el-form-item>
+			    	<el-form :model="editForm3" label-width="20px" >
+			    		<el-form-item>
+			    			<draggable v-model="curFiles" :move="getdata" @update="datadragEnd">
+						      <transition-group>						        
+						        <el-card class="box-card" v-for="(item, index) in curFiles" :key="item.fileId">
+								  <div slot="header" class="clearfix">
+								  	<el-select v-model="item.fileType" style="width: 80%;" >
+									    <el-option v-for="item2 in fileTypeOptions" :key="item2.value" :label="item2.label" :value="item2.value">
+									    </el-option>
+								  	</el-select>
+								    <el-button style="float: right; padding: 3px 0" type="text" @click.native="deletePicForEdit(item, index)">删除</el-button>
+								  </div>							  
+								  <div  class="text item">
+								  	<img :src="item.fileUrl" class="image">
+								  </div>
+								  <div>
+								  	<el-input v-model="item.fileHint" placeholder="输入图片说明" />        
+								  </div>
+								</el-card>
+						      </transition-group>
+						    </draggable>
+			    		</el-form-item>		
+						
 						<el-form-item>
 							<el-upload
 							  class="upload-demo"
@@ -410,8 +415,12 @@
 	import { getUserListPage, removeUser, batchRemoveUser, editUser, addUser, getRecordList } from '../../api/api';
 	import { SET_RECORDBASE, SET_RECORDDISP, SET_RECORDPERSON, SET_RECORDOTHER, SET_RECORDFILES, SET_LOC, CLR_RECORDINFO, SET_RECORDSH, SET_RECORDID } from '../../vuex/mutationTypes'
 	var uuid = require('node-uuid')
+	import draggable from 'vuedraggable'
 
 	export default {
+		components: {　　
+	      draggable
+	    },
 		data() {
 			return {
 				displayState: "display:none",
@@ -712,6 +721,7 @@
 		    },
 			//获取用户列表
 			getRecords() {
+				try{
 				this.listLoading = true;
 				this.filters.offset = this.page-1;
 				if(this.kyDateQj === ''){
@@ -724,20 +734,20 @@
 				}
 				//console.log(this.$moment(this.filters.kyDateBegin["0"]).format("YYYY-MM-DD"));				
 				let data = JSON.stringify(this.filters)
-				//console.log(data);
+				console.log(data);
 				this.$http({
 			        url: this.$store.getters.GetterBaseUrl + 'records/getRecentRecordList',
 			        params: {accessToken: this.$store.getters.GetterAccessToken},
 			        method: 'Post',
 			        emulateJSON: true,
 			        headers: {
-			          contentType: 'application/x-www-form-urlencoded'			          
+			          contentType: 'application/x-www-form-urlencoded'		          
 			        },
 			        body: {
 			        	filter: data
 			        }
 			      }).then(function (res) {
-			      	this.listLoading = false;
+			      	this.listLoading = false
 			      	if(res.data.code == 604){
 			      		this.records = res.data.data.pbsList;
 			      		this.total = res.data.data.rowNum;
@@ -747,7 +757,14 @@
 							type: 'error'
 						});
 			      	}
-			      });			
+			      }).catch(err => {
+		            console.log(err)
+		            this.listLoading = false
+		          })
+		        }
+		        catch(err){
+		        	console.log(err)
+		        }
 			},
 			getCurFiles: function(uuid) {
 				this.editInfoLoading = true
@@ -1145,7 +1162,15 @@
 						})
 					}
 				})
-			}					
+			},
+			getdata(evt) {
+		      console.log(evt.draggedContext.element.id)
+	        },
+		    datadragEnd(evt) {
+		      console.log('拖动前的索引 :' + evt.oldIndex)
+		      console.log('拖动后的索引 :' + evt.newIndex)
+		      console.log(this.curFiles)
+		    }					
 		}		
 	}
 
@@ -1182,6 +1207,6 @@
 	      clear: both
 	  }
 	  .box-card {
-	    width: 240px;
+	    width: 80%;
 	  }
 </style>

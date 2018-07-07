@@ -36,7 +36,7 @@ let routes = [
         name: '报表管理',
         iconCls: 'fa fa-bar-chart',
         children: [
-            //{ path: '/report', component: report, name: '记录报表' }
+            { path: '/report', component: report, name: '记录报表' }
         ]
     },    
     {
