@@ -273,6 +273,9 @@
 			    <el-tab-pane label="相关图像" name="picInfo">
 			    	<el-form :model="editForm3" label-width="20px" >
 			    		<el-form-item>
+			    			<el-button type="primary" @click.native="showOrderDialog" >调整图像顺序</el-button>
+			    		</el-form-item>
+			    		<el-form-item>
 			    			<draggable v-model="curFiles" :move="getdata" @update="datadragEnd">
 						      <transition-group>						        
 						        <el-card class="box-card" v-for="(item, index) in curFiles" :key="item.fileId">
@@ -406,6 +409,22 @@
 				<el-button type="primary" @click.native="checkSubmit" :loading="checkLoading">提交</el-button>
 			</div>
 		</el-dialog>
+		<el-dialog width="80%" title="图像排序" :visible.sync="orderDialogVisible" >
+		  <div class="">
+		    <h1 style="text-align: center;">直接拖动图片排序</h1>
+		    <draggable v-model="orderList" :move="getdata" @update="datadragEnd">
+		      <transition-group>
+		        <div class="orderItem" v-for="element in orderList" :key="element.fileId">
+		          <img :src="element.fileUrl" class="image-thumbnail">
+		        </div>
+		      </transition-group>
+		    </draggable>
+		  </div>
+		  <div slot="footer" class="dialog-footer">
+				<el-button @click.native="orderDialogVisible = false">放弃</el-button>
+				<el-button type="primary" @click.native="commitOrder"  :loading="commitOrderLoading">保存顺序</el-button>				
+			</div>
+		</el-dialog>
 	</section>
 </template>
 
@@ -427,6 +446,7 @@
 				displayBdyy: "display:none",
 				dialogImageUrl: '',
         		dialogVisible: false,
+        		orderDialogVisible: false,
         		submitFlag: 'add',
 				filters: {
 					kyUnitName: '',
@@ -480,9 +500,11 @@
 		        uploadHeaders: {},
 		        records: [],
 		        curFiles: [],
-		        fileList: [],			
+		        fileList: [],
+		        orderList: [],	
 				total: 0,
 				page: 1,
+				commitOrderLoading: false,
 				listLoading: false,
 				editInfoLoading: false,
 				editFormVisible: false,//编辑界面是否显示
@@ -707,7 +729,7 @@
 		    },
 		    handlePreview(file) {
 		        this.dialogImageUrl = file.url
-		        this.dialogVisible = true
+		        this.dialogVisible = true		        
 		    },
 		    handleSuccess(response, file, fileList) {
 		    	console.log(response)
@@ -718,6 +740,13 @@
 		    	//this.uploadHeaders = {
 		    	//	uuid: data
 		    	//}
+		    },
+		    showOrderDialog() {
+	      		this.orderDialogVisible = true
+	      		this.orderList = this.curFiles
+		    },
+		    commitOrder() {
+
 		    },
 			//获取用户列表
 			getRecords() {
@@ -1169,7 +1198,7 @@
 		    datadragEnd(evt) {
 		      console.log('拖动前的索引 :' + evt.oldIndex)
 		      console.log('拖动后的索引 :' + evt.newIndex)
-		      console.log(this.curFiles)
+		      //console.log(this.curFiles)
 		    }					
 		}		
 	}
@@ -1197,6 +1226,17 @@
 	    display: block;
 	  }
 
+	  .image-thumbnail {
+	  	width: 100px;
+	  	height: 60px;
+	  }
+	  .orderItem {
+	  	border: 1;
+	  	border-radius: 2;	  	
+	  	align: middle;
+	  	vertical-align: middle;
+	  	display: table-cell;
+	  }
 	  .clearfix:before,
 	  .clearfix:after {
 	      display: table;
