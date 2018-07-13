@@ -142,6 +142,42 @@
 				this.sysUserAvatar = user.avatar || '';
 			}
 			*/
+			let userInfo = {
+			  userCode: '',
+			  userName: '',
+			  position: '',
+			  departmentId: '',
+			  job: '',
+			  deptCode: '',
+			  parentId: '',
+			  deptName: '',
+			  accessToken: '',
+			}
+			app.getLoginInfo(function(res){
+			    alert("success",res);
+			    userInfo.userCode = res.userId
+			    userInfo.userName = res.user
+			    userInfo.deptName = res.orgName
+
+			    var sendObj = {
+				    userId: res.userId
+				}
+			    app.getUserInfo(sendObj,function(res){
+				    console.log("success_",res)
+				},function(err){
+				    console.log("error_" , err)
+				})
+			},function(err){
+			    alert("error_",err)
+			})
+
+			app.getToken(function(res){
+			     console.log("success_",res)
+			     userInfo.accessToken = res
+			},function(err){
+			     console.log("error_" , err)
+			})
+
 			this.$http({
 		        url: bUrl+'common/getInitInfo?accessToken='+this.$route.query.accessToken,
 		        method: 'Get',
