@@ -72,7 +72,7 @@
 </template>
 
 <script>
-	import { SET_BASEINFO, SET_SYSINFO, SET_USERLIST, SET_UNITLIST, SET_PRIVLIST } from '../vuex/mutationTypes'
+	import { SET_BASEINFO, SET_SYSINFO, SET_USERLIST, SET_UNITLIST, SET_PRIVLIST, SET_BASEURL, SET_TOKEN } from '../vuex/mutationTypes'
 	export default {
 		data() {
 			return {
@@ -124,24 +124,38 @@
 			},
 			showMenu(i,status){
 				this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-'+i)[0].style.display=status?'block':'none';
+			},
+			getInitInfo(token) {
+				this.$http({
+			        url: this.$store.getters.GetterBaseUrl+'common/getInitInfo',
+			        method: 'Get',
+			        emulateJSON: true,
+			        headers: {
+				        contentType: 'application/x-www-form-urlencoded',
+				        requestType:'app',
+						accessToken:token,
+						applyID:'0c1d06a15fbf4e7ca7c139644478d081',
+						secretKey:'7A15945FFC865185AEB0D8DEE536DF46'
+			        }
+		        }).then(function (res) {
+			      	this.listLoading = false
+			      	if(res.data.code == 604){
+			      		console.log(res.data.data);
+			      		this.$store.commit(SET_PRIVLIST, res.data.data.privList)
+			      		this.$store.commit(SET_BASEINFO, res.data.data.userInfo)
+			      		this.$store.commit(SET_USERLIST, res.data.data.userOptions)
+			      		this.$store.commit(SET_UNITLIST, res.data.data.unitOptions)
+			      	}else{
+			      		this.$message({
+							message: res.data.data,
+							type: 'error'
+						})
+			      	}
+			    })
 			}
 		},
 		mounted() {
-			let bUrl = 'http://182.61.43.29:8080/pbsserver/'
-		    bUrl = 'http://127.0.0.1:8081/';
-		    let sysInfo = {
-		    	baseUrl: bUrl,
-		    	accessToken: this.$route.query.accessToken
-		    }
-		    this.$store.commit(SET_SYSINFO, sysInfo);
-			/*
-			var user = sessionStorage.getItem('user');
-			if (user) {
-				user = JSON.parse(user);
-				this.sysUserName = user.name || '';
-				this.sysUserAvatar = user.avatar || '';
-			}
-			*/
+			var that = this
 			let userInfo = {
 			  userCode: '',
 			  userName: '',
@@ -153,53 +167,53 @@
 			  deptName: '',
 			  accessToken: '',
 			}
-			app.getLoginInfo(function(res){
-			    alert("success",res);
-			    userInfo.userCode = res.userId
-			    userInfo.userName = res.user
-			    userInfo.deptName = res.orgName
 
-			    var sendObj = {
-				    userId: res.userId
-				}
-			    app.getUserInfo(sendObj,function(res){
-				    console.log("success_",res)
-				},function(err){
-				    console.log("error_" , err)
-				})
-			},function(err){
-			    alert("error_",err)
-			})
+			let bUrl = 'http://182.61.43.29:8080/pbsserver/'
+			Cordova.exec(function(res){
+				bUrl = res + 'pbsserver/'
+				that.$store.commit(SET_BASEURL, bUrl)
+				app.getLoginInfo(function(res){
+				    alert("success",res)
+				    userInfo.userCode = res.userId
+				    userInfo.userName = res.user
+				    userInfo.deptName = res.orgName
 
-			app.getToken(function(res){
-			     console.log("success_",res)
-			     userInfo.accessToken = res
-			},function(err){
-			     console.log("error_" , err)
-			})
-
-			this.$http({
-		        url: bUrl+'common/getInitInfo?accessToken='+this.$route.query.accessToken,
-		        method: 'Get',
-		        emulateJSON: true,
-		        headers: {
-		          contentType: 'application/x-www-form-urlencoded'
-		        }
-		      }).then(function (res) {
-		      	this.listLoading = false
-		      	if(res.data.code == 604){
-		      		console.log(res.data.data);
-		      		this.$store.commit(SET_PRIVLIST, res.data.data.privList)
-		      		this.$store.commit(SET_BASEINFO, res.data.data.userInfo)
-		      		this.$store.commit(SET_USERLIST, res.data.data.userOptions)
-		      		this.$store.commit(SET_UNITLIST, res.data.data.unitOptions)
-		      	}else{
-		      		this.$message({
-						message: res.data.data,
-						type: 'error'
+				    var sendObj = {
+					    userId: res.userId
+					}
+				    app.getUserInfo(sendObj,function(res){
+					    console.log("success_",res)
+					},function(err){
+					    console.log("error_" , err)
 					})
-		      	}
-		      })
+				},function(err){
+				    alert("error_",err)
+				})
+
+				app.getToken(function(res){
+				     console.log("success_",res)
+				     that.$store.commit(SET_TOKEN, res)
+
+				     that.getInitInfo(res)
+				},function(err){
+				     console.log("error_" , err)
+				})
+
+			}, function(res){
+				console.log(res)
+				bUrl = 'http://127.0.0.1:8081/'
+				that.$store.commit(SET_BASEURL, bUrl)
+			}, "XhPaasPlugin", "getGatewayAddr", [1])
+			//0:获取移动网地址, 1:获取公安网地址			
+		    
+			/*
+			var user = sessionStorage.getItem('user');
+			if (user) {
+				user = JSON.parse(user);
+				this.sysUserName = user.name || '';
+				this.sysUserAvatar = user.avatar || '';
+			}
+			*/
 			//this.sysUserName = 'ff';
 			//this.sysUserAvatar = 'gg';
 

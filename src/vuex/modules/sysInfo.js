@@ -17,6 +17,12 @@ const mutations = {
     } catch (err) {
       console.log(err)
     }
+  },
+  [SET_BASEURL] (state, url) {
+    state.baseUrl = rul
+  },
+  [SET_TOKEN] (state, token) {
+    state.accessToken = token
   }
 }
 

@@ -25,3 +25,5 @@ export const SET_LOC = 'SET_LOC'
 
 // sysInfo
 export const SET_SYSINFO = 'SET_SYSINFO'
+export const SET_BASEURL = 'SET_BASEURL'
+export const SET_TOKEN = 'SET_TOKEN'
