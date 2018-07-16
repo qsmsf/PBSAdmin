@@ -703,7 +703,11 @@
 				        emulateJSON: true,
 				        headers: {
 				          contentType: 'application/x-www-form-urlencoded',
-				          fileId: data
+				          fileId: data,
+				          requestType:'app',
+						  accessToken: this.$store.getters.GetterAccessToken,
+						  applyID: this.$store.getters.GetterSysInfo.applyID,
+						  secretKey: this.$store.getters.GetterSysInfo.secretKey
 				        }
 				      }).then(function (res) {
 				      	this.editInfoLoading = false
@@ -766,11 +770,14 @@
 				console.log(data);
 				this.$http({
 			        url: this.$store.getters.GetterBaseUrl + 'records/getRecentRecordList',
-			        params: {accessToken: this.$store.getters.GetterAccessToken},
 			        method: 'Post',
 			        emulateJSON: true,
 			        headers: {
-			          contentType: 'application/x-www-form-urlencoded'		          
+			          contentType: 'application/x-www-form-urlencoded',
+			          requestType:'app',
+					  accessToken: this.$store.getters.GetterAccessToken,
+					  applyID: this.$store.getters.GetterSysInfo.applyID,
+					  secretKey: this.$store.getters.GetterSysInfo.secretKey
 			        },
 			        body: {
 			        	filter: data
@@ -805,7 +812,11 @@
 			        emulateJSON: true,
 			        headers: {
 			          contentType: 'application/x-www-form-urlencoded',
-			          uuid: data
+			          uuid: data,
+			          requestType:'app',
+					  accessToken: this.$store.getters.GetterAccessToken,
+					  applyID: this.$store.getters.GetterSysInfo.applyID,
+					  secretKey: this.$store.getters.GetterSysInfo.secretKey
 			        }
 			      }).then(function (res) {
 			      	this.editInfoLoading = false
@@ -831,7 +842,11 @@
 			        emulateJSON: true,
 			        headers: {
 			          contentType: 'application/x-www-form-urlencoded',
-			          recId: data
+			          recId: data,
+			          requestType:'app',
+					  accessToken: this.$store.getters.GetterAccessToken,
+					  applyID: this.$store.getters.GetterSysInfo.applyID,
+					  secretKey: this.$store.getters.GetterSysInfo.secretKey
 			        }
 			      }).then(function (res) {
 			      	this.editInfoLoading = false
@@ -937,7 +952,11 @@
 				        emulateJSON: true,
 				        headers: {
 				          contentType: 'application/x-www-form-urlencoded',
-				          recId: data
+				          recId: data,
+				          requestType:'app',
+						  accessToken: this.$store.getters.GetterAccessToken,
+						  applyID: this.$store.getters.GetterSysInfo.applyID,
+						  secretKey: this.$store.getters.GetterSysInfo.secretKey
 				        }
 				      }).then(function (res) {
 				      	this.listLoading = false
@@ -1053,7 +1072,11 @@
 				        method: 'Post',
 				        emulateJSON: true,
 				        headers: {
-				          contentType: 'application/x-www-form-urlencoded'
+				          contentType: 'application/x-www-form-urlencoded',
+				          requestType:'app',
+						  accessToken: this.$store.getters.GetterAccessToken,
+						  applyID: this.$store.getters.GetterSysInfo.applyID,
+						  secretKey: this.$store.getters.GetterSysInfo.secretKey
 				        },
 				        body: {
 				            record: data
@@ -1165,7 +1188,11 @@
 						        method: 'Post',
 						        emulateJSON: true,
 						        headers: {
-						          contentType: 'application/x-www-form-urlencoded'
+						          contentType: 'application/x-www-form-urlencoded',
+						          requestType:'app',
+						  		  accessToken: this.$store.getters.GetterAccessToken,
+						  		  applyID: this.$store.getters.GetterSysInfo.applyID,
+						  		  secretKey: this.$store.getters.GetterSysInfo.secretKey
 						        },
 						        body: {
 						            record: data,

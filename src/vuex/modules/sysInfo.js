@@ -1,11 +1,15 @@
 import {
-  SET_SYSINFO
+  SET_SYSINFO,
+  SET_BASEURL,
+  SET_TOKEN
 } from '../mutationTypes'
 
 const state = {
   // 保存第一页数据
   baseUrl: '',
   accessToken: '',
+  applyID:'0c1d06a15fbf4e7ca7c139644478d081',
+  secretKey:'7A15945FFC865185AEB0D8DEE536DF46'
 }
 
 const mutations = {
@@ -19,7 +23,7 @@ const mutations = {
     }
   },
   [SET_BASEURL] (state, url) {
-    state.baseUrl = rul
+    state.baseUrl = url
   },
   [SET_TOKEN] (state, token) {
     state.accessToken = token

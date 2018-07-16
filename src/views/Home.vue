@@ -123,30 +123,31 @@
 				this.collapsed=!this.collapsed;
 			},
 			showMenu(i,status){
-				this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-'+i)[0].style.display=status?'block':'none';
+				this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-'+i)[0].style.display=status?'block':'none'
 			},
 			getInitInfo(token) {
+				let that = this
 				this.$http({
-			        url: this.$store.getters.GetterBaseUrl+'common/getInitInfo',
+			        url: that.$store.getters.GetterBaseUrl+'common/getInitInfo',
 			        method: 'Get',
 			        emulateJSON: true,
 			        headers: {
 				        contentType: 'application/x-www-form-urlencoded',
 				        requestType:'app',
 						accessToken:token,
-						applyID:'0c1d06a15fbf4e7ca7c139644478d081',
-						secretKey:'7A15945FFC865185AEB0D8DEE536DF46'
+						applyID: that.$store.getters.GetterSysInfo.applyID,
+						secretKey: that.$store.getters.GetterSysInfo.secretKey
 			        }
 		        }).then(function (res) {
-			      	this.listLoading = false
+			      	that.listLoading = false
 			      	if(res.data.code == 604){
 			      		console.log(res.data.data);
-			      		this.$store.commit(SET_PRIVLIST, res.data.data.privList)
-			      		this.$store.commit(SET_BASEINFO, res.data.data.userInfo)
-			      		this.$store.commit(SET_USERLIST, res.data.data.userOptions)
-			      		this.$store.commit(SET_UNITLIST, res.data.data.unitOptions)
+			      		that.$store.commit(SET_PRIVLIST, res.data.data.privList)
+			      		that.$store.commit(SET_BASEINFO, res.data.data.userInfo)
+			      		that.$store.commit(SET_USERLIST, res.data.data.userOptions)
+			      		that.$store.commit(SET_UNITLIST, res.data.data.unitOptions)
 			      	}else{
-			      		this.$message({
+			      		that.$message({
 							message: res.data.data,
 							type: 'error'
 						})
@@ -155,7 +156,9 @@
 			}
 		},
 		mounted() {
+			console.log(this)
 			var that = this
+			console.log(that)
 			let userInfo = {
 			  userCode: '',
 			  userName: '',
@@ -165,45 +168,47 @@
 			  deptCode: '',
 			  parentId: '',
 			  deptName: '',
-			  accessToken: '',
+			  accessToken: ''
 			}
 
 			let bUrl = 'http://182.61.43.29:8080/pbsserver/'
-			Cordova.exec(function(res){
-				bUrl = res + 'pbsserver/'
-				that.$store.commit(SET_BASEURL, bUrl)
-				app.getLoginInfo(function(res){
-				    alert("success",res)
-				    userInfo.userCode = res.userId
-				    userInfo.userName = res.user
-				    userInfo.deptName = res.orgName
+			bUrl = 'http://68.61.8.125/szga/pbsserver/'
+			bUrl = 'http://127.0.0.1:8081/'
+			console.log(222)
+			that.$store.commit(SET_BASEURL, bUrl)
+			console.log(333)
+			alert(123)
+			//this.getInitInfo('acc');
 
-				    var sendObj = {
-					    userId: res.userId
-					}
-				    app.getUserInfo(sendObj,function(res){
-					    console.log("success_",res)
-					},function(err){
-					    console.log("error_" , err)
-					})
-				},function(err){
-				    alert("error_",err)
-				})
+			console.log(that.$store.getters.GetterBaseUrl)
+			// app.getLoginInfo(function(res){
+			//     alert("success",res)
+			//     userInfo.userCode = res.userId
+			//     userInfo.userName = res.user
+			//     userInfo.deptName = res.orgName
 
-				app.getToken(function(res){
-				     console.log("success_",res)
-				     that.$store.commit(SET_TOKEN, res)
+			//     var sendObj = {
+			// 	    userId: res.userId
+			// 	}
+			//     app.getUserInfo(sendObj,function(res){
+			// 	    console.log("success_",res)
+			// 	},function(err){
+			// 	    console.log("error_" , err)
+			// 	})
+			// },function(err){
+			//     alert("error_",err)
+			// })
 
-				     that.getInitInfo(res)
-				},function(err){
-				     console.log("error_" , err)
-				})
+			// app.getToken(function(res){
+			//      console.log("success_",res)
+			//      that.$store.commit(SET_TOKEN, res)
 
-			}, function(res){
-				console.log(res)
-				bUrl = 'http://127.0.0.1:8081/'
-				that.$store.commit(SET_BASEURL, bUrl)
-			}, "XhPaasPlugin", "getGatewayAddr", [1])
+			//      that.getInitInfo(res)
+			// },function(err){
+			//      console.log("error_" , err)
+			// })
+			
+			
 			//0:获取移动网地址, 1:获取公安网地址			
 		    
 			/*
