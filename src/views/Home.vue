@@ -3,7 +3,7 @@
 		<el-col :span="24" class="header" style="display:none">
 			<el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
 				{{collapsed?'':sysName}}
-			</el-col>
+			</el-col>			
 			<el-col :span="10">
 				<div class="tools" @click.prevent="collapse">
 					<i class="fa fa-align-justify"></i>

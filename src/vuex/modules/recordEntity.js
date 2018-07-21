@@ -110,7 +110,6 @@ const mutations = {
       state.entity.bhrZw = data.bhrZw;
       state.entity.bdyy = data.bdyy;
       state.entity.bhfs = data.bhfs;
-      state.entity.bhrUnitName = data.bhrUnitName;
     } catch (err) {
       console.log(err)
     }
